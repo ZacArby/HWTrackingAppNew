@@ -1,23 +1,37 @@
 package com.example.hwtrackingapp;
 
-import javafx.application.Application;  //importing the Application class from the javafx package
-import javafx.scene.Scene;  //importing the Scene class from the javafx package
-import javafx.scene.control.Label;  //importing the Label class from the javafx package
-import javafx.scene.layout.StackPane;  //importing the StackPane class from the javafx package
-import javafx.stage.Stage;  //importing the Stage class from the javafx package
+import javafx.application.Application;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Label;
 
-public class main extends Application {  //creating a class called BozoWindow that extends the Application class
+//Extending the Application class
+public class main extends Application {
 
+    //Override the start() method
     @Override
-    public void start(Stage primaryStage) {  //overriding the start method of the Application class
-        Label label = new Label("bozo");  //creating a new Label object with the text "bozo"
-        StackPane root = new StackPane(label);  //creating a new StackPane object with the Label object
-        Scene scene = new Scene(root);  //creating a new Scene object with the StackPane object as the root
-        primaryStage.setScene(scene);  //setting the Scene object as the scene of the primary stage
-        primaryStage.show();  //showing the primary stage
+    public void start(Stage primaryStage) {
+
+        //Creating a BorderPane
+        BorderPane root = new BorderPane();
+
+        //Creating a Scene by passing the root group object
+        Scene scene = new Scene(root, 700, 1000);
+
+        //Setting the title to the Stage
+        primaryStage.setTitle("HW Tracker");
+
+        //Adding the scene to the Stage
+        primaryStage.setScene(scene);
+
+        //Displaying the contents of the stage
+        primaryStage.show();
     }
 
-    public static void main(String[] args) {  //creating a main method
-        launch(args);  //launching the application
+    //The main() method is ignored in JavaFX applications
+    public static void main(String args[]){
+        //Launching the application
+        launch(args);
     }
 }
