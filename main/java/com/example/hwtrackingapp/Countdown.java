@@ -9,12 +9,18 @@ import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 public class Countdown {
+    int daysUntil;
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
+
+
+
+    }
+    public void counter() throws ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter due date (yyyy-mm-dd):");
         String dueDate;
-        dueDate= scanner.nextLine();
+        dueDate = scanner.nextLine();
         // System.out.println(dueDate);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Date currDate = format.parse(String.valueOf(LocalDate.now()));
@@ -27,7 +33,7 @@ public class Countdown {
         //daysTo = (daysTo-1);
         // never mind it works now
         System.out.println("Days: " + daysTo);
+        daysUntil = (int) daysTo;
 
-
-
-}}
+    }
+}
