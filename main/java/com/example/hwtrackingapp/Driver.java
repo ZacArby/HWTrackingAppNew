@@ -1,11 +1,12 @@
 package com.example.hwtrackingapp;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -16,6 +17,10 @@ import java.util.Optional;
 
 //Extending the Application class
 public class Driver extends Application {
+    String assignmentTitle;
+    String dueDate;
+    double totalEstimatedTime;
+    double timeRemaining;
 
     //Override the start() method
     @Override
@@ -61,17 +66,39 @@ public class Driver extends Application {
         b5.setFont(Font.font("Serif Bold", 50));
 
         b5.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
-            // Mke pop-up window
-            Dialog dialog = new Dialog();
-            TextField question1 = new TextField("...");
-            dialog.setHeaderText("Enter the name of your new assignment:");
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Text Input Dialog");
+            dialog.setHeaderText("Look, a Text Input Dialog");
+            dialog.setContentText("Please enter your name, age, and gender:");
 
-            Optional<String> result = dialog.showAndWait();
-            String assignmentName = "none";
+            // Set lay-out of pop-up
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
 
-            if (result.isPresent()) {
-                assignmentName = result.get();
-            }
+            TextField assignmentTitleTF = new TextField();
+            TextField dueDateTF = new TextField();
+            TextField totalEstimatedTimeTF = new TextField();
+
+            // Create input boxes
+            grid.add(new Label("Assignment Title:"), 0, 0);
+            grid.add(assignmentTitleTF, 1, 0);
+            grid.add(new Label("Due Date (YY/MM/DD):"), 0, 1);
+            grid.add(dueDateTF, 1, 1);
+            grid.add(new Label("Total Estimated Time Needed (Hours):"), 0, 2);
+            grid.add(totalEstimatedTimeTF, 1, 2);
+
+            dialog.getDialogPane().setContent(grid);
+
+            Optional<String> result = dialog.showAndWait(); // Freezes main window
+
+            // Sets variables equal to text field equivalents
+            assignmentTitle = assignmentTitleTF.getText();
+            dueDate = (dueDateTF.getText()).toString();
+            totalEstimatedTime = Double.parseDouble(totalEstimatedTimeTF.getText());
+
+            result.ifPresent(data -> System.out.println("assignmentTitle: " + assignmentTitle + ", dueDate: " + dueDate + ", totalEstimatedTime: " + totalEstimatedTime));
         });
 
         //Adding Labels to the GridPane
