@@ -15,7 +15,10 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+//PLEASE SAVE NAME AS A STRING SOMEWHERE
+//Same with due date
+//Please SAVE ESTIMATED TIME AS INT
+//ARRAY IS THE EASIEST WAY OR JUST MAKE A BUNCH OF VARIABLES
 
 //Extending the Application class
 public class Driver extends Application {
@@ -145,12 +148,13 @@ public class Driver extends Application {
             // Create input boxes
             grid.add(new Label("Assignment Title:"), 0, 0);
             grid.add(assignmentTitleTF, 1, 0);
-            grid.add(new Label("Due Date (YY/MM/DD):"), 0, 1);
+            grid.add(new Label("Due Date (yyyy-mm-dd):"), 0, 1);
             grid.add(dueDateTF, 1, 1);
             grid.add(new Label("Total Estimated Time Needed (Hours):"), 0, 2);
             grid.add(totalEstimatedTimeTF, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
+
 
             Optional<String> result = dialog.showAndWait(); // Freezes main window
             //////////////////////////////////////
