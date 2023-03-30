@@ -22,6 +22,32 @@ public class Driver extends Application {
     double totalEstimatedTime;
     double timeRemaining;
 
+    // Current ammount of time spent
+    double timer1 = 0;
+    double timer2 = 0;
+    double timer3 = 0;
+    double timer4 = 0;
+    double timer5 = 0;
+    double timer6 = 0;
+    double timer7 = 0;
+
+    // Total amount of time required to be spent
+    double total1 = 0;
+    double total2 = 0;
+    double total3 = 0;
+    double total4 = 0;
+    double total5 = 0;
+    double total6 = 0;
+    double total7 = 0;
+
+    boolean timer1Status = false;
+    boolean timer2Status = false;
+    boolean timer3Status = false;
+    boolean timer4Status = false;
+    boolean timer5Status = false;
+    boolean timer6Status = false;
+    boolean timer7Status = false;
+
     //Override the start() method
     @Override
     public void start(Stage primaryStage) {
@@ -43,13 +69,13 @@ public class Driver extends Application {
         l5.setFont(Font.font("Serif Bold", 50));
 
         //Creating timers
-        Label t1 = new Label("  6h14m");
+        Label t1 = new Label("Current Time Spent: " + String.valueOf(timer1) + "\nTime Required: " + String.valueOf(total1));
         t1.setFont(Font.font("Serif Bold", 34));
-        Label t2 = new Label("  2h0m");
+        Label t2 = new Label("Current Time Spent: " + String.valueOf(timer2) + "\nTime Required: " + String.valueOf(total2));
         t2.setFont(Font.font("Serif Bold", 34));
-        Label t3 = new Label("  3h27m");
+        Label t3 = new Label("Current Time Spent: " + String.valueOf(timer3) + "\nTime Required: " + String.valueOf(total3));
         t3.setFont(Font.font("Serif Bold", 34));
-        Label t4 = new Label("  0h20m");
+        Label t4 = new Label("Current Time Spent: " + String.valueOf(timer4) + "\nTime Required: " + String.valueOf(total4));
         t4.setFont(Font.font("Serif Bold", 34));
 
         // Adding a button to the left of the timers
@@ -65,6 +91,12 @@ public class Driver extends Application {
         b4.setFont(Font.font("Serif Bold", 50));
         b5.setFont(Font.font("Serif Bold", 50));
 
+        /*b1.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
+            timer1Status = true;
+            System.out.println(timer1Status);
+        });*/
+
+        // On "+" button pressed
         b5.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Text Input Dialog");
@@ -101,6 +133,8 @@ public class Driver extends Application {
             result.ifPresent(data -> System.out.println("assignmentTitle: " + assignmentTitle + ", dueDate: " + dueDate + ", totalEstimatedTime: " + totalEstimatedTime));
         });
 
+
+
         //Adding Labels to the GridPane
         root.add(l1, 0, 0, 1, 1);
         root.add(l2, 0, 1, 5, 1);
@@ -121,7 +155,7 @@ public class Driver extends Application {
         root.add(b5, 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, 1000, 1000);
+        Scene scene = new Scene(root, 1162, 1000);
         scene.setFill(Color.WHITE);
 
         //Setting the style of the Labels
@@ -156,5 +190,6 @@ public class Driver extends Application {
     public static void main(String args[]) {
         //Launching the application
         launch(args);
+        //Creating timers
     }
 }
