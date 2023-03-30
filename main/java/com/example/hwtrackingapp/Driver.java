@@ -15,18 +15,23 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+//PLEASE SAVE NAME AS A STRING SOMEWHERE
+//Same with due date
+//Please SAVE ESTIMATED TIME AS INT
+//ARRAY IS THE EASIEST WAY OR JUST MAKE A BUNCH OF VARIABLES
 
 //Extending the Application class
 public class Driver extends Application {
-    //lidst addd
-    //List<MyType> myList = new ArrayList<>();
     List<String> assignmentTitle = new ArrayList<>();
     List<String> dueDate = new ArrayList<>();
     List<Double> totalEstimatedTime = new ArrayList<>();
     List<Double> timeRemaining = new ArrayList<>();
 
-    // Current ammount of time spent
+    // Get size of screen
+    double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
+    double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
+
+    // Current amount of time spent
     double timer1 = 0;
     double timer2 = 0;
     double timer3 = 0;
@@ -120,14 +125,16 @@ public class Driver extends Application {
             // Create input boxes
             grid.add(new Label("Assignment Title:"), 0, 0);
             grid.add(assignmentTitleTF, 1, 0);
-            grid.add(new Label("Due Date (YY/MM/DD):"), 0, 1);
+            grid.add(new Label("Due Date (yyyy-mm-dd):"), 0, 1);
             grid.add(dueDateTF, 1, 1);
             grid.add(new Label("Total Estimated Time Needed (Hours):"), 0, 2);
             grid.add(totalEstimatedTimeTF, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
 
+
             Optional<String> result = dialog.showAndWait(); // Freezes main window
+            //////////////////////////////////////
 
             // Sets variables equal to text field equivalents
             assignmentTitle.add(assignmentTitleTF.getText());
@@ -160,7 +167,7 @@ public class Driver extends Application {
         root.add(b5, 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, 1162, 1000);
+        Scene scene = new Scene(root, screenWidth*0.6052, screenHeight*0.9259);
         scene.setFill(Color.WHITE);
 
         //Setting the style of the Labels
