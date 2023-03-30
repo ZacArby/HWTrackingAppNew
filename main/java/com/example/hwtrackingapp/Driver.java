@@ -19,14 +19,16 @@ import java.util.Optional;
 
 //Extending the Application class
 public class Driver extends Application {
-    //lidst addd
-    //List<MyType> myList = new ArrayList<>();
     List<String> assignmentTitle = new ArrayList<>();
     List<String> dueDate = new ArrayList<>();
     List<Double> totalEstimatedTime = new ArrayList<>();
     List<Double> timeRemaining = new ArrayList<>();
 
-    // Current ammount of time spent
+    // Get size of screen
+    double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
+    double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
+
+    // Current amount of time spent
     double timer1 = 0;
     double timer2 = 0;
     double timer3 = 0;
@@ -128,6 +130,7 @@ public class Driver extends Application {
             dialog.getDialogPane().setContent(grid);
 
             Optional<String> result = dialog.showAndWait(); // Freezes main window
+            //////////////////////////////////////
 
             // Sets variables equal to text field equivalents
             assignmentTitle.add(assignmentTitleTF.getText());
@@ -160,7 +163,7 @@ public class Driver extends Application {
         root.add(b5, 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, 1162, 1000);
+        Scene scene = new Scene(root, screenWidth*0.6052, screenHeight*0.9259);
         scene.setFill(Color.WHITE);
 
         //Setting the style of the Labels
