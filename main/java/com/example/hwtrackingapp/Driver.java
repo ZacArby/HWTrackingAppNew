@@ -37,6 +37,15 @@ public class Driver extends Application {
     double timer6 = 0;
     double timer7 = 0;
 
+    // Streak val
+    int streak1 = 0;
+    int streak2 = 0;
+    int streak3 = 0;
+    int streak4 = 0;
+    int streak5 = 0;
+    int streak6 = 0;
+    int streak7 = 0;
+
     // Total amount of time required to be spent
     double total1 = 0;
     double total2 = 0;
@@ -74,6 +83,18 @@ public class Driver extends Application {
         Label l5 = new Label("Add New Task");
         l5.setFont(Font.font("Serif Bold", 50));
 
+        //Creating Streak Labels
+        Label s1 = new Label("Streak: " + Integer.toString(streak1));
+        s1.setFont(Font.font("Serif Bold", 50));
+        Label s2 = new Label("Streak: " + Integer.toString(streak2));
+        s2.setFont(Font.font("Serif Bold", 50));
+        Label s3 = new Label("Streak: " + Integer.toString(streak3));
+        s3.setFont(Font.font("Serif Bold", 50));
+        Label s4 = new Label("Streak: " + Integer.toString(streak4));
+        s4.setFont(Font.font("Serif Bold", 50));
+        Label s5 = new Label("Streak: " + Integer.toString(streak5));
+        s5.setFont(Font.font("Serif Bold", 50));
+
         //Creating timers
         Label t1 = new Label("Current Time Spent: " + String.valueOf(timer1) + "\nTime Required: " + String.valueOf(total1));
         t1.setFont(Font.font("Serif Bold", 34));
@@ -91,6 +112,8 @@ public class Driver extends Application {
         Button b4 = new Button("Start");
         Button b5 = new Button("+");
 
+        // Adjust style of buttons
+        // dynamically adjust buttons
         b1.setFont(Font.font("Serif Bold", 50));
         b2.setFont(Font.font("Serif Bold", 50));
         b3.setFont(Font.font("Serif Bold", 50));
@@ -147,7 +170,12 @@ public class Driver extends Application {
         root.add(l4, 0, 3, 5, 1);
         root.add(l5, 0, 4, 5, 1);
 
-
+        // Adding streaks to the GridPane
+        root.add(s1, 1, 0, 1, 1);
+        root.add(s2, 1, 1, 5, 1);
+        root.add(s3, 1, 2, 5, 1);
+        root.add(s4, 1, 3, 5, 1);
+        root.add(s5, 1, 4, 5, 1);
 
         // Adding timers to grid
         root.add(t1, 5, 0);
@@ -163,7 +191,7 @@ public class Driver extends Application {
         root.add(b5, 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, screenWidth*0.6052, screenHeight*0.9259);
+        Scene scene = new Scene(root, screenWidth*0.8, screenHeight*0.9259);
         scene.setFill(Color.WHITE);
 
         //Setting the style of the Labels
