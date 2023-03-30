@@ -12,15 +12,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
 //Extending the Application class
 public class Driver extends Application {
-    String assignmentTitle;
-    String dueDate;
-    double totalEstimatedTime;
-    double timeRemaining;
+    //lidst addd
+    //List<MyType> myList = new ArrayList<>();
+    List<String> assignmentTitle = new ArrayList<>();
+    List<String> dueDate = new ArrayList<>();
+    List<Double> totalEstimatedTime = new ArrayList<>();
+    List<Double> timeRemaining = new ArrayList<>();
 
     // Current ammount of time spent
     double timer1 = 0;
@@ -126,28 +130,29 @@ public class Driver extends Application {
             Optional<String> result = dialog.showAndWait(); // Freezes main window
 
             // Sets variables equal to text field equivalents
-            assignmentTitle = assignmentTitleTF.getText();
-            dueDate = (dueDateTF.getText()).toString();
-            totalEstimatedTime = Double.parseDouble(totalEstimatedTimeTF.getText());
-
-            result.ifPresent(data -> System.out.println("assignmentTitle: " + assignmentTitle + ", dueDate: " + dueDate + ", totalEstimatedTime: " + totalEstimatedTime));
+            assignmentTitle.add(assignmentTitleTF.getText());
+            dueDate.add(assignmentTitleTF.getText());
+            totalEstimatedTime.add(Double.valueOf(assignmentTitleTF.getText()));
         });
 
 
 
-        //Adding Labels to the GridPane
+        // Adding Labels to the GridPane
         root.add(l1, 0, 0, 1, 1);
         root.add(l2, 0, 1, 5, 1);
         root.add(l3, 0, 2, 5, 1);
         root.add(l4, 0, 3, 5, 1);
         root.add(l5, 0, 4, 5, 1);
 
+
+
+        // Adding timers to grid
         root.add(t1, 5, 0);
         root.add(t2, 5, 1);
         root.add(t3, 5, 2);
         root.add(t4, 5, 3);
 
-        // i=x and i1=y
+        // Adding buttons to grid
         root.add(b1, 4, 0);
         root.add(b2, 4, 1);
         root.add(b3, 4, 2);
