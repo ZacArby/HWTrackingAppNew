@@ -12,20 +12,27 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-//PLEASE SAVE NAME AS A STRING SOMEWHERE
-//Same with due date
-//Please SAVE ESTIMATED TIME AS INT
-//ARRAY IS THE EASIEST WAY OR JUST MAKE A BUNCH OF VARIABLES
+//make pretty
 
 //Extending the Application class
 public class Driver extends Application {
-    List<String> assignmentTitle = new ArrayList<>();
-    List<String> dueDate = new ArrayList<>();
-    List<Double> totalEstimatedTime = new ArrayList<>();
-    List<Double> timeRemaining = new ArrayList<>();
+    double start1 = 0;
+    double start2 = 0;
+    double start3 = 0;
+    double start4 = 0;
+
+    double finish1 = 0;
+    double finish2 = 0;
+    double finish3 = 0;
+    double finish4 = 0;
+
+
+
+    String[] assignmentTitles = {"", "", "", "", ""};
+    String[] dueDates = {"", "", "", "", ""};
+    Integer[] totalEstimatedTimes = {null, null, null, null, null};
+    Integer[] remainingTimes = {null, null, null, null, null};
 
     // Get size of screen
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
@@ -37,8 +44,6 @@ public class Driver extends Application {
     double timer3 = 0;
     double timer4 = 0;
     double timer5 = 0;
-    double timer6 = 0;
-    double timer7 = 0;
 
     // Streak val
     int streak1 = 0;
@@ -46,25 +51,21 @@ public class Driver extends Application {
     int streak3 = 0;
     int streak4 = 0;
     int streak5 = 0;
-    int streak6 = 0;
-    int streak7 = 0;
 
     // Total amount of time required to be spent
-    double total1 = 0;
+    double total1 = 1;
     double total2 = 0;
     double total3 = 0;
     double total4 = 0;
     double total5 = 0;
-    double total6 = 0;
-    double total7 = 0;
 
     boolean timer1Status = false;
     boolean timer2Status = false;
     boolean timer3Status = false;
     boolean timer4Status = false;
     boolean timer5Status = false;
-    boolean timer6Status = false;
-    boolean timer7Status = false;
+
+    int counter = 0;
 
     //Override the start() method
     @Override
@@ -87,25 +88,25 @@ public class Driver extends Application {
         l5.setFont(Font.font("Serif Bold", 50));
 
         //Creating Streak Labels
-        Label s1 = new Label("Streak: " + Integer.toString(streak1));
+        Label s1 = new Label("Streak: " + streak1);
         s1.setFont(Font.font("Serif Bold", 50));
-        Label s2 = new Label("Streak: " + Integer.toString(streak2));
+        Label s2 = new Label("Streak: " + streak2);
         s2.setFont(Font.font("Serif Bold", 50));
-        Label s3 = new Label("Streak: " + Integer.toString(streak3));
+        Label s3 = new Label("Streak: " + streak3);
         s3.setFont(Font.font("Serif Bold", 50));
-        Label s4 = new Label("Streak: " + Integer.toString(streak4));
+        Label s4 = new Label("Streak: " + streak4);
         s4.setFont(Font.font("Serif Bold", 50));
-        Label s5 = new Label("Streak: " + Integer.toString(streak5));
+        Label s5 = new Label("Streak: " + streak5);
         s5.setFont(Font.font("Serif Bold", 50));
 
         //Creating timers
-        Label t1 = new Label("Current Time Spent: " + String.valueOf(timer1) + "\nTime Required: " + String.valueOf(total1));
+        Label t1 = new Label("Current Time Spent (Mins): " + timer1 + "\nTime Required (Hours): " + total1);
         t1.setFont(Font.font("Serif Bold", 34));
-        Label t2 = new Label("Current Time Spent: " + String.valueOf(timer2) + "\nTime Required: " + String.valueOf(total2));
+        Label t2 = new Label("Current Time Spent (Mins): " + timer2 + "\nTime Required (Hours): " + total2);
         t2.setFont(Font.font("Serif Bold", 34));
-        Label t3 = new Label("Current Time Spent: " + String.valueOf(timer3) + "\nTime Required: " + String.valueOf(total3));
+        Label t3 = new Label("Current Time Spent (Mins): " + timer3 + "\nTime Required (Hours): " + total3);
         t3.setFont(Font.font("Serif Bold", 34));
-        Label t4 = new Label("Current Time Spent: " + String.valueOf(timer4) + "\nTime Required: " + String.valueOf(total4));
+        Label t4 = new Label("Current Time Spent (Mins): " + timer4 + "\nTime Required (Hours): " + total4);
         t4.setFont(Font.font("Serif Bold", 34));
 
         // Adding a button to the left of the timers
@@ -123,10 +124,101 @@ public class Driver extends Application {
         b4.setFont(Font.font("Serif Bold", 50));
         b5.setFont(Font.font("Serif Bold", 50));
 
-        /*b1.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
-            timer1Status = true;
-            System.out.println(timer1Status);
-        });*/
+        // On start1 pressed
+        b1.setOnAction(e -> {
+            if (timer1Status == false) { // if timer was not already running
+                start1 = System.currentTimeMillis(); // start timer
+                timer1Status = true;
+                b1.setText("Stop"); // Change start button to stop button
+
+            } else { // if timer was already running
+                finish1 = System.currentTimeMillis(); // stop timer
+                timer1 += Math.round(((finish1 - start1) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
+
+                total1 -= ((finish1 - start1) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
+                timer1Status = false;
+                b1.setText("Start"); // Reset button
+
+                // Reset label with timer and total time
+                t1.setText("Current Time Spent (Mins): " + timer1 + "\nTime Required (Hours): " + Math.round(total1 * 10) / 10.0);
+
+                // Reset time counters
+                start1 = 0.0;
+                finish1 = 0.0;
+            }
+        });
+
+        // On start1 pressed
+        b2.setOnAction(e -> {
+            if (timer2Status == false) { // if timer was not already running
+                start2 = System.currentTimeMillis(); // start timer
+                timer2Status = true;
+                b2.setText("Stop"); // Change start button to stop button
+
+            } else { // if timer was already running
+                finish2 = System.currentTimeMillis(); // stop timer
+                timer2 += Math.round(((finish2 - start2) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
+
+                total2 -= ((finish2 - start2) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
+                timer2Status = false;
+                b2.setText("Start"); // Reset button
+
+                // Reset label with timer and total time
+                t2.setText("Current Time Spent (Mins): " + timer2 + "\nTime Required (Hours): " + Math.round(total2 * 10) / 10.0);
+
+                // Reset time counters
+                start2 = 0.0;
+                finish2 = 0.0;
+            }
+        });
+
+        // On start3 pressed
+        b3.setOnAction(e -> {
+            if (timer3Status == false) { // if timer was not already running
+                start3 = System.currentTimeMillis(); // start timer
+                timer3Status = true;
+                b3.setText("Stop"); // Change start button to stop button
+
+            } else { // if timer was already running
+                finish3 = System.currentTimeMillis(); // stop timer
+                timer3 += Math.round(((finish3 - start3) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
+
+                total3 -= ((finish3 - start3) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
+                timer3Status = false;
+                b3.setText("Start"); // Reset button
+
+                // Reset label with timer and total time
+                t3.setText("Current Time Spent (Mins): " + timer3 + "\nTime Required (Hours): " + Math.round(total3 * 10) / 10.0);
+
+                // Reset time counters
+                start3 = 0.0;
+                finish3 = 0.0;
+            }
+        });
+
+        // On start4 pressed
+        b4.setOnAction(e -> {
+            if (timer4Status == false) { // if timer was not already running
+                start4 = System.currentTimeMillis(); // start timer
+                timer4Status = true;
+                b4.setText("Stop"); // Change start button to stop button
+
+            } else { // if timer was already running
+                finish4 = System.currentTimeMillis(); // stop timer
+                timer4 += Math.round(((finish4 - start4) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
+
+                total4 -= ((finish4 - start4) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
+                timer4Status = false;
+                b4.setText("Start"); // Reset button
+
+                // Reset label with timer and total time
+                t4.setText("Current Time Spent (Mins): " + timer4 + "\nTime Required (Hours): " + Math.round(total4 * 10) / 10.0);
+
+                // Reset time counters
+                start4 = 0.0;
+                finish4 = 0.0;
+            }
+        });
 
         // On "+" button pressed
         b5.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
@@ -154,18 +246,14 @@ public class Driver extends Application {
             grid.add(totalEstimatedTimeTF, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
-
-
             Optional<String> result = dialog.showAndWait(); // Freezes main window
-            //////////////////////////////////////
 
             // Sets variables equal to text field equivalents
-            assignmentTitle.add(assignmentTitleTF.getText());
-            dueDate.add(assignmentTitleTF.getText());
-            totalEstimatedTime.add(Double.valueOf(assignmentTitleTF.getText()));
+            assignmentTitles[counter] = assignmentTitleTF.getText();
+            dueDates[counter] = assignmentTitleTF.getText();
+            totalEstimatedTimes[counter] = Integer.valueOf(assignmentTitleTF.getText());
+            counter++;
         });
-
-
 
         // Adding Labels to the GridPane
         root.add(l1, 0, 0, 1, 1);
@@ -226,10 +314,7 @@ public class Driver extends Application {
         primaryStage.show();
     }
 
-    //The main() method is ignored in JavaFX applications
     public static void main(String args[]) {
-        //Launching the application
         launch(args);
-        //Creating timers
     }
 }
