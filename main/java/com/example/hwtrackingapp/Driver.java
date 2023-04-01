@@ -13,26 +13,15 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.Optional;
+// Make it possible to add projects
 //make pretty
 
 //Extending the Application class
 public class Driver extends Application {
-    double start1 = 0;
-    double start2 = 0;
-    double start3 = 0;
-    double start4 = 0;
-
-    double finish1 = 0;
-    double finish2 = 0;
-    double finish3 = 0;
-    double finish4 = 0;
-
-
-
-    String[] assignmentTitles = {"", "", "", "", ""};
-    String[] dueDates = {"", "", "", "", ""};
-    Integer[] totalEstimatedTimes = {null, null, null, null, null};
-    Integer[] remainingTimes = {null, null, null, null, null};
+    String[] assignmentTitles = {"", "", "", ""};
+    String[] dueDates = {"", "", "", ""};
+    Integer[] totalEstimatedTimes = {null, null, null, null};
+    Integer[] remainingTimes = {null, null, null, null};
 
     // Get size of screen
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
@@ -43,27 +32,33 @@ public class Driver extends Application {
     double timer2 = 0;
     double timer3 = 0;
     double timer4 = 0;
-    double timer5 = 0;
+
+    double start1 = 0;
+    double start2 = 0;
+    double start3 = 0;
+    double start4 = 0;
+
+    double finish1 = 0;
+    double finish2 = 0;
+    double finish3 = 0;
+    double finish4 = 0;
 
     // Streak val
     int streak1 = 0;
     int streak2 = 0;
     int streak3 = 0;
     int streak4 = 0;
-    int streak5 = 0;
 
     // Total amount of time required to be spent
-    double total1 = 1;
+    double total1 = 0;
     double total2 = 0;
     double total3 = 0;
     double total4 = 0;
-    double total5 = 0;
 
     boolean timer1Status = false;
     boolean timer2Status = false;
     boolean timer3Status = false;
     boolean timer4Status = false;
-    boolean timer5Status = false;
 
     int counter = 0;
 
@@ -76,13 +71,13 @@ public class Driver extends Application {
         root.setGridLinesVisible(true);
 
         //Creating Assignment Title Labels
-        Label l1 = new Label("English Essay");
+        Label l1 = new Label("");
         l1.setFont(Font.font("Serif Bold", 50));
-        Label l2 = new Label("Math Homework");
+        Label l2 = new Label("");
         l2.setFont(Font.font("Serif Bold", 50));
-        Label l3 = new Label("History Presentation");
+        Label l3 = new Label("");
         l3.setFont(Font.font("Serif Bold", 50));
-        Label l4 = new Label("Chemistry Lab Report");
+        Label l4 = new Label("");
         l4.setFont(Font.font("Serif Bold", 50));
         Label l5 = new Label("Add New Task");
         l5.setFont(Font.font("Serif Bold", 50));
@@ -96,8 +91,6 @@ public class Driver extends Application {
         s3.setFont(Font.font("Serif Bold", 50));
         Label s4 = new Label("Streak: " + streak4);
         s4.setFont(Font.font("Serif Bold", 50));
-        Label s5 = new Label("Streak: " + streak5);
-        s5.setFont(Font.font("Serif Bold", 50));
 
         //Creating timers
         Label t1 = new Label("Current Time Spent (Mins): " + timer1 + "\nTime Required (Hours): " + total1);
@@ -267,7 +260,6 @@ public class Driver extends Application {
         root.add(s2, 1, 1, 5, 1);
         root.add(s3, 1, 2, 5, 1);
         root.add(s4, 1, 3, 5, 1);
-        root.add(s5, 1, 4, 5, 1);
 
         // Adding timers to grid
         root.add(t1, 5, 0);
