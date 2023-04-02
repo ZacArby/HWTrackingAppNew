@@ -13,11 +13,13 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.util.Optional;
-// Make it possible to add projects
+import java.util.stream.IntStream;
 //make pretty
+//after every + plus press update assignment names etc
+// after timer update streaks
 
 //Extending the Application class
-public class Driver extends Application {
+public class Driver<labels> extends Application {
     String[] assignmentTitles = {"", "", "", ""};
     String[] dueDates = {"", "", "", ""};
     Integer[] totalEstimatedTimes = {null, null, null, null};
@@ -27,40 +29,33 @@ public class Driver extends Application {
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
-    // Current amount of time spent
-    double timer1 = 0;
-    double timer2 = 0;
-    double timer3 = 0;
-    double timer4 = 0;
-
-    double start1 = 0;
-    double start2 = 0;
-    double start3 = 0;
-    double start4 = 0;
-
-    double finish1 = 0;
-    double finish2 = 0;
-    double finish3 = 0;
-    double finish4 = 0;
-
-    // Streak val
-    int streak1 = 0;
-    int streak2 = 0;
-    int streak3 = 0;
-    int streak4 = 0;
-
-    // Total amount of time required to be spent
-    double total1 = 0;
-    double total2 = 0;
-    double total3 = 0;
-    double total4 = 0;
-
-    boolean timer1Status = false;
-    boolean timer2Status = false;
-    boolean timer3Status = false;
-    boolean timer4Status = false;
-
     int counter = 0;
+
+    Label[] labels = IntStream.range(0, 5)
+            .mapToObj(i -> new Label(""))
+            .toArray(Label[]::new);
+
+    Label[] streaks = IntStream.range(0, 4)
+            .mapToObj(i -> new Label(""))
+            .toArray(Label[]::new);
+
+    Button[] buttons = IntStream.range(0, 5)
+            .mapToObj(i -> new Button(""))
+            .toArray(Button[]::new);
+
+    int[] streakValues = {0, 0, 0, 0};
+
+    //Timer
+    Double[] timerCounts = {0.0, 0.0, 0.0, 0.0};
+    Double[] startTimes = {0.0, 0.0, 0.0, 0.0};
+    Double[] finishTimes = {0.0, 0.0, 0.0, 0.0};
+    Double[] totalTimes = {0.00, 0.00, 0.00, 0.00};
+    Boolean[] timerStatuses = {false, false, false, false};
+
+    Label[] timers = IntStream.range(0, 4)
+            .mapToObj(i -> new Label(""))
+            .toArray(Label[]::new);
+
 
     //Override the start() method
     @Override
@@ -70,151 +65,20 @@ public class Driver extends Application {
         GridPane root = new GridPane();
         root.setGridLinesVisible(true);
 
-        //Creating Assignment Title Labels
-        Label l1 = new Label("");
-        l1.setFont(Font.font("Serif Bold", 50));
-        Label l2 = new Label("");
-        l2.setFont(Font.font("Serif Bold", 50));
-        Label l3 = new Label("");
-        l3.setFont(Font.font("Serif Bold", 50));
-        Label l4 = new Label("");
-        l4.setFont(Font.font("Serif Bold", 50));
-        Label l5 = new Label("Add New Task");
-        l5.setFont(Font.font("Serif Bold", 50));
+        createAssignmentTitleLabels(assignmentTitles, labels);
+        createStreakLabels(streaks, streakValues);
+        createTimerLabels(timers, timerCounts, totalTimes);
+        createButtons(buttons);
 
-        //Creating Streak Labels
-        Label s1 = new Label("Streak: " + streak1);
-        s1.setFont(Font.font("Serif Bold", 50));
-        Label s2 = new Label("Streak: " + streak2);
-        s2.setFont(Font.font("Serif Bold", 50));
-        Label s3 = new Label("Streak: " + streak3);
-        s3.setFont(Font.font("Serif Bold", 50));
-        Label s4 = new Label("Streak: " + streak4);
-        s4.setFont(Font.font("Serif Bold", 50));
 
-        //Creating timers
-        Label t1 = new Label("Current Time Spent (Mins): " + timer1 + "\nTime Required (Hours): " + total1);
-        t1.setFont(Font.font("Serif Bold", 34));
-        Label t2 = new Label("Current Time Spent (Mins): " + timer2 + "\nTime Required (Hours): " + total2);
-        t2.setFont(Font.font("Serif Bold", 34));
-        Label t3 = new Label("Current Time Spent (Mins): " + timer3 + "\nTime Required (Hours): " + total3);
-        t3.setFont(Font.font("Serif Bold", 34));
-        Label t4 = new Label("Current Time Spent (Mins): " + timer4 + "\nTime Required (Hours): " + total4);
-        t4.setFont(Font.font("Serif Bold", 34));
-
-        // Adding a button to the left of the timers
-        Button b1 = new Button("Start");
-        Button b2 = new Button("Start");
-        Button b3 = new Button("Start");
-        Button b4 = new Button("Start");
-        Button b5 = new Button("+");
-
-        // Adjust style of buttons
-        // dynamically adjust buttons
-        b1.setFont(Font.font("Serif Bold", 50));
-        b2.setFont(Font.font("Serif Bold", 50));
-        b3.setFont(Font.font("Serif Bold", 50));
-        b4.setFont(Font.font("Serif Bold", 50));
-        b5.setFont(Font.font("Serif Bold", 50));
-
-        // On start1 pressed
-        b1.setOnAction(e -> {
-            if (timer1Status == false) { // if timer was not already running
-                start1 = System.currentTimeMillis(); // start timer
-                timer1Status = true;
-                b1.setText("Stop"); // Change start button to stop button
-
-            } else { // if timer was already running
-                finish1 = System.currentTimeMillis(); // stop timer
-                timer1 += Math.round(((finish1 - start1) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
-
-                total1 -= ((finish1 - start1) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
-                timer1Status = false;
-                b1.setText("Start"); // Reset button
-
-                // Reset label with timer and total time
-                t1.setText("Current Time Spent (Mins): " + timer1 + "\nTime Required (Hours): " + Math.round(total1 * 10) / 10.0);
-
-                // Reset time counters
-                start1 = 0.0;
-                finish1 = 0.0;
-            }
-        });
-
-        // On start1 pressed
-        b2.setOnAction(e -> {
-            if (timer2Status == false) { // if timer was not already running
-                start2 = System.currentTimeMillis(); // start timer
-                timer2Status = true;
-                b2.setText("Stop"); // Change start button to stop button
-
-            } else { // if timer was already running
-                finish2 = System.currentTimeMillis(); // stop timer
-                timer2 += Math.round(((finish2 - start2) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
-
-                total2 -= ((finish2 - start2) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
-                timer2Status = false;
-                b2.setText("Start"); // Reset button
-
-                // Reset label with timer and total time
-                t2.setText("Current Time Spent (Mins): " + timer2 + "\nTime Required (Hours): " + Math.round(total2 * 10) / 10.0);
-
-                // Reset time counters
-                start2 = 0.0;
-                finish2 = 0.0;
-            }
-        });
-
-        // On start3 pressed
-        b3.setOnAction(e -> {
-            if (timer3Status == false) { // if timer was not already running
-                start3 = System.currentTimeMillis(); // start timer
-                timer3Status = true;
-                b3.setText("Stop"); // Change start button to stop button
-
-            } else { // if timer was already running
-                finish3 = System.currentTimeMillis(); // stop timer
-                timer3 += Math.round(((finish3 - start3) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
-
-                total3 -= ((finish3 - start3) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
-                timer3Status = false;
-                b3.setText("Start"); // Reset button
-
-                // Reset label with timer and total time
-                t3.setText("Current Time Spent (Mins): " + timer3 + "\nTime Required (Hours): " + Math.round(total3 * 10) / 10.0);
-
-                // Reset time counters
-                start3 = 0.0;
-                finish3 = 0.0;
-            }
-        });
-
-        // On start4 pressed
-        b4.setOnAction(e -> {
-            if (timer4Status == false) { // if timer was not already running
-                start4 = System.currentTimeMillis(); // start timer
-                timer4Status = true;
-                b4.setText("Stop"); // Change start button to stop button
-
-            } else { // if timer was already running
-                finish4 = System.currentTimeMillis(); // stop timer
-                timer4 += Math.round(((finish4 - start4) / 1000 / 60)*10) / 10.0; // Add elapsed time to timer (Mins)
-
-                total4 -= ((finish4 - start4) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours
-                timer4Status = false;
-                b4.setText("Start"); // Reset button
-
-                // Reset label with timer and total time
-                t4.setText("Current Time Spent (Mins): " + timer4 + "\nTime Required (Hours): " + Math.round(total4 * 10) / 10.0);
-
-                // Reset time counters
-                start4 = 0.0;
-                finish4 = 0.0;
-            }
-        });
+        for (int i = 0; i < 4; i++) {
+            buttons[i].setOnAction(e -> {
+                setButtonAction(buttons, startTimes, finishTimes, timerCounts, totalTimes, timerStatuses, timers);
+            });
+        }
 
         // On "+" button pressed
-        b5.setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
+        buttons[4].setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Text Input Dialog");
             dialog.setHeaderText("Look, a Text Input Dialog");
@@ -249,52 +113,34 @@ public class Driver extends Application {
         });
 
         // Adding Labels to the GridPane
-        root.add(l1, 0, 0, 1, 1);
-        root.add(l2, 0, 1, 5, 1);
-        root.add(l3, 0, 2, 5, 1);
-        root.add(l4, 0, 3, 5, 1);
-        root.add(l5, 0, 4, 5, 1);
+        root.add(labels[0], 0, 0, 1, 1);
+        root.add(labels[1], 0, 1, 5, 1);
+        root.add(labels[2], 0, 2, 5, 1);
+        root.add(labels[3], 0, 3, 5, 1);
+        root.add(labels[4], 0, 4, 5, 1);
 
         // Adding streaks to the GridPane
-        root.add(s1, 1, 0, 1, 1);
-        root.add(s2, 1, 1, 5, 1);
-        root.add(s3, 1, 2, 5, 1);
-        root.add(s4, 1, 3, 5, 1);
+        root.add(streaks[0], 1, 0, 1, 1);
+        root.add(streaks[1], 1, 1, 5, 1);
+        root.add(streaks[2], 1, 2, 5, 1);
+        root.add(streaks[3], 1, 3, 5, 1);
 
         // Adding timers to grid
-        root.add(t1, 5, 0);
-        root.add(t2, 5, 1);
-        root.add(t3, 5, 2);
-        root.add(t4, 5, 3);
+        root.add(timers[0], 5, 0);
+        root.add(timers[1], 5, 1);
+        root.add(timers[2], 5, 2);
+        root.add(timers[3], 5, 3);
 
         // Adding buttons to grid
-        root.add(b1, 4, 0);
-        root.add(b2, 4, 1);
-        root.add(b3, 4, 2);
-        root.add(b4, 4, 3);
-        root.add(b5, 4, 4);
+        root.add(buttons[0], 4, 0);
+        root.add(buttons[1], 4, 1);
+        root.add(buttons[2], 4, 2);
+        root.add(buttons[3], 4, 3);
+        root.add(buttons[4], 4, 4);
 
         //Creating a Scene by passing the root group object
         Scene scene = new Scene(root, screenWidth*0.8, screenHeight*0.9259);
         scene.setFill(Color.WHITE);
-
-        //Setting the style of the Labels
-        l1.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
-        l2.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
-        l3.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
-        l4.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
-        l5.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
-
-        t1.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
-        t2.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
-        t3.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
-        t4.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
-
-        b1.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
-        b2.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
-        b3.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
-        b4.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
-        b5.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
 
         //Setting the title to the Stage
         primaryStage.setTitle("HW Tracker");
@@ -304,6 +150,69 @@ public class Driver extends Application {
 
         //Displaying the contents of the stage
         primaryStage.show();
+    }
+
+    public void createAssignmentTitleLabels(String[] assignmentTitles, Label[] labels) {
+        for (int i = 0; i < labels.length - 1; i++) {
+            labels[i].setText(" " + assignmentTitles[i]);
+            labels[i].setFont(Font.font("Serif Bold", 50));
+            labels[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
+        }
+        labels[labels.length - 1].setText(" Add New Task");
+        labels[labels.length - 1].setFont(Font.font("Serif Bold", 50));
+    }
+
+    public void createStreakLabels(Label[] streaks, int[] streakValues) {
+        for(int i = 0; i < streaks.length; i++) {
+            streaks[i].setText(" Streak: " + streakValues[i] + " ");
+            streaks[i].setFont(Font.font("Serif Bold", 50));
+        }
+    }
+
+    public void createTimerLabels(Label[] timers, Double[] timerCounts, Double[] totalTimes) {
+        for (int i = 0; i < 4; i++) {
+            timers[i].setText(" Current Time Spent (Mins): " + timerCounts[i] + " \n Time Required (Hours): " + (totalTimes[i] = Math.round(totalTimes[i] * 100.0) / 100.0) + " ");
+            timers[i].setFont(Font.font("Serif Bold", 34));
+            timers[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
+        }
+    }
+
+    public void createButtons(Button[] buttons) {
+        for (int i = 0; i < 4; i++) {
+            buttons[i].setText(" Start ");
+            buttons[i].setFont(Font.font("Serif Bold", 50));
+            buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
+        }
+        buttons[4].setText(" + ");
+    }
+
+    public void setButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses,
+                                Label[] timers) {
+        for (int i = 0; i < buttons.length; i++) {
+            int index = i;
+            buttons[i].setOnAction(e -> {
+                if (timerStatuses[index] == false) { // if timer was not already running
+                    startTimes[index] = Double.valueOf(System.currentTimeMillis()); // start timer
+                    timerStatuses[index] = true;
+                    buttons[index].setText("Stop"); // Change start button to stop button
+
+                } else { // if timer was already running
+                    finishTimes[index] = Double.valueOf(System.currentTimeMillis()); // stop timer
+                    timerCounts[index] += Math.round(((finishTimes[index] - startTimes[index]) / 1000 / 60)*10) / 10.00; // Add elapsed time to timer (Mins)
+
+                    totalTimes[index] -= ((finishTimes[index] - startTimes[index]) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours)
+                    timerStatuses[index] = false;
+                    buttons[index].setText("Start"); // Reset button
+
+                    // Reset label with timer and total time
+                    createTimerLabels(timers, timerCounts, totalTimes);
+
+                    // Reset time counters
+                    startTimes[index] = 0.0;
+                    finishTimes[index] = 0.0;
+                }
+            });
+        }
     }
 
     public static void main(String args[]) {
