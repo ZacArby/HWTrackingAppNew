@@ -14,12 +14,19 @@ import javafx.stage.Stage;
 
 import java.util.Optional;
 import java.util.stream.IntStream;
-//make pretty
-//after every + plus press update assignment names etc
-// after timer update streaks
 
-//Extending the Application class
-public class Driver<labels> extends Application {
+/**
+ * The Driver class is the main class for the HWTrackingApp. This class extends the Application class from JavaFX and
+ * contains the start method which initializes the GUI for the app. This class includes an array of Strings to store
+ * the assignment titles, an array of Strings to store the due dates, an array of Integers to store the estimated times
+ * for completion, and an array of Integers to store the remaining times to completion for each assignment.
+ *
+ * @author Zac Arbuthnot
+ * @version 1.0
+ * @since 2023-04-02
+ */
+
+public class Driver extends Application {
     String[] assignmentTitles = {"", "", "", ""};
     String[] dueDates = {"", "", "", ""};
     Integer[] totalEstimatedTimes = {null, null, null, null};
@@ -60,7 +67,6 @@ public class Driver<labels> extends Application {
     //Override the start() method
     @Override
     public void start(Stage primaryStage) {
-
         //Creating a GridPane
         GridPane root = new GridPane();
         root.setGridLinesVisible(true);
@@ -152,6 +158,16 @@ public class Driver<labels> extends Application {
         primaryStage.show();
     }
 
+    public static void main(String args[]) {
+        launch(args);
+    }
+
+    /** Sets the text, font, and style for an array of labels representing assignment titles,
+     * as well as adding a label for adding a new task.
+     *
+     * @param assignmentTitles An array of strings representing assignment titles.
+     * @param labels An array of labels to represent the assignment titles and the "Add New Task" label.
+     */
     public void createAssignmentTitleLabels(String[] assignmentTitles, Label[] labels) {
         for (int i = 0; i < labels.length - 1; i++) {
             labels[i].setText(" " + assignmentTitles[i]);
@@ -162,6 +178,12 @@ public class Driver<labels> extends Application {
         labels[labels.length - 1].setFont(Font.font("Serif Bold", 50));
     }
 
+    /** Sets the text and font of an array of Label objects to display a streak value.
+     *
+     * @param streaks An array of Label objects to display the streak values.
+     * @param streakValues An array of integers representing the streak values to display.
+     * @throws IllegalArgumentException if the length of the streaks and streakValues arrays do not match.
+     */
     public void createStreakLabels(Label[] streaks, int[] streakValues) {
         for(int i = 0; i < streaks.length; i++) {
             streaks[i].setText(" Streak: " + streakValues[i] + " ");
@@ -169,6 +191,12 @@ public class Driver<labels> extends Application {
         }
     }
 
+    /** Sets the text, font, and style of the given timer Labels with the corresponding timerCounts and totalTimes.
+     *
+     * @param timers An array of Labels to set the text, font, and style.
+     * @param timerCounts An array of Doubles representing the current time spent for each timer.
+     * @param totalTimes An array of Doubles representing the total time required for each timer.
+     */
     public void createTimerLabels(Label[] timers, Double[] timerCounts, Double[] totalTimes) {
         for (int i = 0; i < 4; i++) {
             timers[i].setText(" Current Time Spent (Mins): " + timerCounts[i] + " \n Time Required (Hours): " + (totalTimes[i] = Math.round(totalTimes[i] * 100.0) / 100.0) + " ");
@@ -177,6 +205,12 @@ public class Driver<labels> extends Application {
         }
     }
 
+    /** Sets the properties of the given Button objects to create four Start buttons and one Add button.
+     * The Start buttons will have a white background, black border, and a text of "Start" with a font size of 50px.
+     * The Add button will have the same background, border, and font properties, but with a text of "+".
+     *
+     *@param buttons an array of Button objects to be created
+     */
     public void createButtons(Button[] buttons) {
         for (int i = 0; i < 4; i++) {
             buttons[i].setText(" Start ");
@@ -184,8 +218,21 @@ public class Driver<labels> extends Application {
             buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
         }
         buttons[4].setText(" + ");
+        buttons[4].setFont(Font.font("Serif Bold", 50));
+        buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
     }
 
+    /** Sets the action for the given array of Buttons to start and stop a timer when clicked, and updates
+     * the given arrays of start times, finish times, timer counts, total times, timer statuses, and labels.
+     *
+     * @param buttons the array of Buttons that will have their actions set
+     * @param startTimes the array of start times for each timer
+     * @param finishTimes the array of finish times for each timer
+     * @param timerCounts the array of timer counts for each timer
+     * @param totalTimes the array of total times for each timer
+     * @param timerStatuses the array of timer statuses for each timer (running or not running)
+     * @param timers the array of Labels that will display the current timer and total time for each timer
+     */
     public void setButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses,
                                 Label[] timers) {
         for (int i = 0; i < buttons.length; i++) {
@@ -213,9 +260,5 @@ public class Driver<labels> extends Application {
                 }
             });
         }
-    }
-
-    public static void main(String args[]) {
-        launch(args);
     }
 }
