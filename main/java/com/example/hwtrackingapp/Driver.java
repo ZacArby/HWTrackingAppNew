@@ -11,7 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import java.util.Optional;
+
 import java.util.stream.IntStream;
 
 /**
@@ -31,8 +31,6 @@ public class Driver extends Application {
     String[] dueDates = {"", "", "", ""};
     Integer[] totalEstimatedTimes = {null, null, null, null};
     Integer[] remainingTimes = {null, null, null, null};
-    int counter = 0;
-
 
     // Timer variables
     Double[] timerCounts = {0.0, 0.0, 0.0, 0.0};
@@ -44,6 +42,13 @@ public class Driver extends Application {
     // Get size of screen
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
+
+    // UI size variables
+    double buttonSize = screenWidth*0.026;
+    double labelHeight = screenWidth*0.185185;
+    double labelWidth = screenWidth*0.3125;
+    double windowHeight = screenHeight*0.87;
+    double windowWidth = screenWidth*0.78;
 
     // Declaring the labels
     Label[] labels = IntStream.range(0, 5)
@@ -79,9 +84,7 @@ public class Driver extends Application {
 
         // Checks for start button press
         for (int i = 0; i < 4; i++) {
-            buttons[i].setOnAction(e -> {
-                setStartButtonAction(buttons, startTimes, finishTimes, timerCounts, totalTimes, timerStatuses, timers);
-            });
+            buttons[i].setOnAction(e -> setStartButtonAction(buttons, startTimes, finishTimes, timerCounts, totalTimes, timerStatuses, timers));
         }
 
         // On "+" button pressed
@@ -89,8 +92,8 @@ public class Driver extends Application {
 
             TextInputDialog dialog = new TextInputDialog(); // Creates pop-up
             // Set-up pop-up text
-            dialog.setTitle("Text Input Dialog");
-            dialog.setHeaderText("Look, a Text Input Dialog");
+            dialog.setTitle("HW Tracker");
+            dialog.setHeaderText("Add Assignment");
             dialog.setContentText("Please enter your name, age, and gender:");
 
             // Set lay-out of pop-up
@@ -113,7 +116,7 @@ public class Driver extends Application {
             grid.add(totalEstimatedTimeTF, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
-            Optional<String> result = dialog.showAndWait(); // Freezes main window until pop-up is closed
+            dialog.showAndWait();
         });
 
         // Adding Labels to the GridPane
@@ -143,7 +146,7 @@ public class Driver extends Application {
         root.add(buttons[4], 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, screenWidth*0.8, screenHeight*0.9259);
+        Scene scene = new Scene(root, windowWidth, windowHeight);
         scene.setFill(Color.WHITE);
 
         //Setting the title to the Stage
@@ -156,7 +159,7 @@ public class Driver extends Application {
         primaryStage.show();
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         launch(args);
     }
 
@@ -170,12 +173,12 @@ public class Driver extends Application {
         // Draws each assignment title
         for (int i = 0; i < labels.length - 1; i++) {
             labels[i].setText(" " + assignmentTitles[i]);
-            labels[i].setFont(Font.font("Serif Bold", 50));
+            labels[i].setFont(Font.font("Serif Bold", buttonSize));
             labels[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
         }
         // Draws new task label
         labels[labels.length - 1].setText(" Add New Task");
-        labels[labels.length - 1].setFont(Font.font("Serif Bold", 50));
+        labels[labels.length - 1].setFont(Font.font("Serif Bold", buttonSize));
     }
 
     /** Sets the text and font of an array of Label objects to display a streak value.
@@ -187,7 +190,7 @@ public class Driver extends Application {
     public void createStreakLabels(Label[] streaks, int[] streakValues) {
         for(int i = 0; i < streaks.length; i++) {
             streaks[i].setText(" Streak: " + streakValues[i] + " ");
-            streaks[i].setFont(Font.font("Serif Bold", 50));
+            streaks[i].setFont(Font.font("Serif Bold", buttonSize));
         }
     }
 
@@ -216,13 +219,13 @@ public class Driver extends Application {
         // Creates all the start buttons
         for (int i = 0; i < 4; i++) {
             buttons[i].setText(" Start ");
-            buttons[i].setFont(Font.font("Serif Bold", 50));
-            buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
+            buttons[i].setFont(Font.font("Serif Bold", buttonSize));
+            buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: buttonSize;");
         }
         // Creates the "+" button
         buttons[4].setText(" + ");
-        buttons[4].setFont(Font.font("Serif Bold", 50));
-        buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
+        buttons[4].setFont(Font.font("Serif Bold", buttonSize));
+        buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: buttonSize;");
     }
 
     /** Sets the action for the given array of Buttons to start and stop a timer when clicked, and updates
@@ -242,13 +245,13 @@ public class Driver extends Application {
             int index = i;
 
             buttons[i].setOnAction(e -> {
-                if (timerStatuses[index] == false) { // if timer was not already running
-                    startTimes[index] = Double.valueOf(System.currentTimeMillis()); // start timer
+                if (!timerStatuses[index]) { // if timer was not already running
+                    startTimes[index] = (double) System.currentTimeMillis(); // start timer
                     timerStatuses[index] = true;
                     buttons[index].setText("Stop"); // Change start button to stop button
 
                 } else { // if timer was already running
-                    finishTimes[index] = Double.valueOf(System.currentTimeMillis()); // stop timer
+                    finishTimes[index] = (double) System.currentTimeMillis(); // stop timer
                     timerCounts[index] += Math.round(((finishTimes[index] - startTimes[index]) / 1000 / 60)*10) / 10.00; // Add elapsed time to timer (Mins)
 
                     totalTimes[index] -= ((finishTimes[index] - startTimes[index]) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours)
