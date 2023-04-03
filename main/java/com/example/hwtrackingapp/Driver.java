@@ -1,5 +1,6 @@
 package com.example.hwtrackingapp;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -242,44 +243,51 @@ public class Driver extends Application {
         buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
     }
 
-    /** Sets the action for the given array of Buttons to start and stop a timer when clicked, and updates
-     * the given arrays of start times, finish times, timer counts, total times, timer statuses, and labels.
+    /**
+     * Sets the action for each start button. Starts an AnimationTimer that updates the timers each frame
+     * whenever the start button is active.
      *
-     * @param buttons the array of Buttons that will have their actions set
-     * @param startTimes the array of start times for each timer
-     * @param finishTimes the array of finish times for each timer
-     * @param timerCounts the array of timer counts for each timer
-     * @param totalTimes the array of total times for each timer
-     * @param timerStatuses the array of timer statuses for each timer (running or not running)
-     * @param timers the array of Labels that will display the current timer and total time for each timer
+     * @param buttons        An array of buttons representing the start/stop buttons for each timer.
+     * @param startTimes     An array of start times for each timer.
+     * @param finishTimes    An array of finish times for each timer.
+     * @param timerCounts    An array of current timer counts for each timer.
+     * @param totalTimes     An array of total times for each timer.
+     * @param timerStatuses  An array of timer statuses (true if timer is running, false if not) for each timer.
+     * @param timers         An array of labels representing the timers for each timer.
      */
     public void setStartButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses, Label[] timers) {
 
-        for (int i = 0; i < buttons.length - 1; i++) { // Cycles through for each possible start button press
+        // Create an AnimationTimer to update the timers each frame
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                // For each button, if the timer is active, update the timer counts and total times and update the labels
+                for (int i = 0; i < buttons.length - 1; i++) {
+                    if (timerStatuses[i]) {
+                        finishTimes[i] = (double) System.currentTimeMillis();
+                        timerCounts[i] += Math.round(((finishTimes[i] - startTimes[i]) / 1000 / 60) * 10) / 10.00;
+                        totalTimes[i] -= ((finishTimes[i] - startTimes[i]) / 1000 / 60) / 60;
+                        createTimerLabels(timers, timerCounts, totalTimes);
+                    }
+                }
+            }
+        };
+        timer.start(); // Start the timer
+
+        // For each button, set its action to start/stop the timer and update the button text
+        for (int i = 0; i < buttons.length - 1; i++) {
             int index = i;
-
             buttons[i].setOnAction(e -> {
-                if (!timerStatuses[index]) { // if timer was not already running
-                    startTimes[index] = (double) System.currentTimeMillis(); // start timer
-                    timerStatuses[index] = true;
-                    buttons[index].setText("Stop"); // Change start button to stop button
-
-                } else { // if timer was already running
-                    finishTimes[index] = (double) System.currentTimeMillis(); // stop timer
-                    timerCounts[index] += Math.round(((finishTimes[index] - startTimes[index]) / 1000 / 60)*10) / 10.00; // Add elapsed time to timer (Mins)
-
-                    totalTimes[index] -= ((finishTimes[index] - startTimes[index]) / 1000 / 60) / 60; // Subtract elapsed time from total time (Hours)
-                    timerStatuses[index] = false;
-                    buttons[index].setText("Start"); // Reset button
-
-                    // Reset label with timer and total time
-                    createTimerLabels(timers, timerCounts, totalTimes);
-
-                    // Reset time counters
-                    startTimes[index] = 0.0;
-                    finishTimes[index] = 0.0;
+                if (!timerStatuses[index]) { // If timer is not already running
+                    startTimes[index] = (double) System.currentTimeMillis(); // Set the start time
+                    timerStatuses[index] = true; // Set the timer status to running
+                    buttons[index].setText("Stop"); // Update the button text
+                } else { // If timer is already running
+                    timerStatuses[index] = false; // Set the timer status to not running
+                    buttons[index].setText("Start"); // Update the button text
                 }
             });
         }
     }
+
 }
