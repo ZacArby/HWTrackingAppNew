@@ -86,6 +86,7 @@ public class Driver extends Application {
 
         // On "+" button pressed
         buttons[4].setOnAction(e -> {
+
             TextInputDialog dialog = new TextInputDialog(); // Creates pop-up
             // Set-up pop-up text
             dialog.setTitle("Text Input Dialog");
@@ -112,13 +113,7 @@ public class Driver extends Application {
             grid.add(totalEstimatedTimeTF, 1, 2);
 
             dialog.getDialogPane().setContent(grid);
-            Optional<String> result = dialog.showAndWait(); // Freezes main window
-
-            // Sets variables equal to text field equivalents
-            assignmentTitles[counter] = assignmentTitleTF.getText();
-            dueDates[counter] = assignmentTitleTF.getText();
-            totalEstimatedTimes[counter] = Integer.valueOf(assignmentTitleTF.getText());
-            counter++;
+            Optional<String> result = dialog.showAndWait(); // Freezes main window until pop-up is closed
         });
 
         // Adding Labels to the GridPane
@@ -242,8 +237,10 @@ public class Driver extends Application {
      * @param timers the array of Labels that will display the current timer and total time for each timer
      */
     public void setStartButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses, Label[] timers) {
-        for (int i = 0; i < buttons.length; i++) { // Cycles through for each possible start button press
+
+        for (int i = 0; i < buttons.length - 1; i++) { // Cycles through for each possible start button press
             int index = i;
+
             buttons[i].setOnAction(e -> {
                 if (timerStatuses[index] == false) { // if timer was not already running
                     startTimes[index] = Double.valueOf(System.currentTimeMillis()); // start timer
