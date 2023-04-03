@@ -109,12 +109,12 @@ public class Driver extends Application {
             dialog.getDialogPane().setContent(grid);
             dialog.showAndWait();
 
+            // Updates the arrays controlling the assignments
             assignmentTitles[assignmentsAdded] = assignmentTitleTF.getText();
             dueDates[assignmentsAdded] = dueDateTF.getText();
             totalTimes[assignmentsAdded] = Double.valueOf(Integer.valueOf(totalEstimatedTimeTF.getText()));
 
-
-            /////////////////////////////////////////////////////////
+            // Updates the labels
             createNewAssignment(assignmentsAdded, assignmentTitles, totalTimes);
             assignmentsAdded++;
         });
@@ -209,6 +209,12 @@ public class Driver extends Application {
         }
     }
 
+    /** This method draws the assignment title and the total time required on the screen for the given index. It updates
+     * the total time required to include two decimal places by rounding it to the nearest hundredth.
+     * @param index the index of the assignment to create
+     * @param assignmentTitles an array of strings representing the titles of the assignments
+     * @param totalTimes an array of doubles representing the total times required for each assignment
+     */
     public void createNewAssignment(int index, String assignmentTitles[], Double totalTimes[]) {
         // Draws assignment title
         labels[index].setText(" " + assignmentTitles[index]);
