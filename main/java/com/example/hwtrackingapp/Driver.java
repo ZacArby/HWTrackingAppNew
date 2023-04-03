@@ -29,8 +29,6 @@ public class Driver extends Application {
     // Declaring input variables
     String[] assignmentTitles = {"", "", "", ""};
     String[] dueDates = {"", "", "", ""};
-    Integer[] totalEstimatedTimes = {null, null, null, null};
-    Integer[] remainingTimes = {null, null, null, null};
 
     // Timer variables
     Double[] timerCounts = {0.0, 0.0, 0.0, 0.0};
@@ -61,6 +59,7 @@ public class Driver extends Application {
             .toArray(Label[]::new);
 
     int[] streakValues = {0, 0, 0, 0};
+    int assignmentsAdded = 0;
 
     //Override the start() method
     @Override
@@ -70,7 +69,7 @@ public class Driver extends Application {
         root.setGridLinesVisible(true);
 
         // Create the elements of the UI
-        createAssignmentTitleLabels(assignmentTitles, labels);
+        createAssignmentTitlesAll(assignmentTitles, labels);
         createStreakLabels(streaks, streakValues);
         createTimerLabels(timers, timerCounts, totalTimes);
         createButtons(buttons);
@@ -82,7 +81,6 @@ public class Driver extends Application {
 
         // On "+" button pressed
         buttons[4].setOnAction(e -> {
-
             TextInputDialog dialog = new TextInputDialog(); // Creates pop-up
             // Set-up pop-up text
             dialog.setTitle("HW Tracker");
@@ -110,6 +108,15 @@ public class Driver extends Application {
 
             dialog.getDialogPane().setContent(grid);
             dialog.showAndWait();
+
+            assignmentTitles[assignmentsAdded] = assignmentTitleTF.getText();
+            dueDates[assignmentsAdded] = dueDateTF.getText();
+            totalTimes[assignmentsAdded] = Double.valueOf(Integer.valueOf(totalEstimatedTimeTF.getText()));
+
+
+            /////////////////////////////////////////////////////////
+            createNewAssignment(assignmentsAdded, assignmentTitles, totalTimes);
+            assignmentsAdded++;
         });
 
         // Adding Labels to the GridPane
@@ -162,7 +169,7 @@ public class Driver extends Application {
      * @param assignmentTitles An array of strings representing assignment titles.
      * @param labels An array of labels to represent the assignment titles and the "Add New Task" label.
      */
-    public void createAssignmentTitleLabels(String[] assignmentTitles, Label[] labels) {
+    public void createAssignmentTitlesAll(String[] assignmentTitles, Label[] labels) {
         // Draws each assignment title
         for (int i = 0; i < labels.length - 1; i++) {
             labels[i].setText(" " + assignmentTitles[i]);
@@ -200,6 +207,14 @@ public class Driver extends Application {
             timers[i].setFont(Font.font("Serif Bold", 34));
             timers[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
         }
+    }
+
+    public void createNewAssignment(int index, String assignmentTitles[], Double totalTimes[]) {
+        // Draws assignment title
+        labels[index].setText(" " + assignmentTitles[index]);
+
+        // Draws total time required
+        timers[index].setText(" Current Time Spent (Mins): " + timerCounts[index] + " \n Time Required (Hours): " + (totalTimes[index] = Math.round(totalTimes[index] * 100.0) / 100.0) + " ");
     }
 
     /** Sets the properties of the given Button objects to create four Start buttons and one Add button.
