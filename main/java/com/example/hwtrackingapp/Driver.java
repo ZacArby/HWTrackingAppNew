@@ -43,13 +43,6 @@ public class Driver extends Application {
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
-    // UI size variables
-    double buttonSize = screenWidth*0.026;
-    double labelHeight = screenWidth*0.185185;
-    double labelWidth = screenWidth*0.3125;
-    double windowHeight = screenHeight*0.87;
-    double windowWidth = screenWidth*0.78;
-
     // Declaring the labels
     Label[] labels = IntStream.range(0, 5)
             .mapToObj(i -> new Label(""))
@@ -146,7 +139,7 @@ public class Driver extends Application {
         root.add(buttons[4], 4, 4);
 
         //Creating a Scene by passing the root group object
-        Scene scene = new Scene(root, windowWidth, windowHeight);
+        Scene scene = new Scene(root, screenWidth*0.78, screenHeight*0.87);
         scene.setFill(Color.WHITE);
 
         //Setting the title to the Stage
@@ -173,12 +166,12 @@ public class Driver extends Application {
         // Draws each assignment title
         for (int i = 0; i < labels.length - 1; i++) {
             labels[i].setText(" " + assignmentTitles[i]);
-            labels[i].setFont(Font.font("Serif Bold", buttonSize));
+            labels[i].setFont(Font.font("Serif Bold", 50));
             labels[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
         }
         // Draws new task label
         labels[labels.length - 1].setText(" Add New Task");
-        labels[labels.length - 1].setFont(Font.font("Serif Bold", buttonSize));
+        labels[labels.length - 1].setFont(Font.font("Serif Bold", 50));
     }
 
     /** Sets the text and font of an array of Label objects to display a streak value.
@@ -190,7 +183,7 @@ public class Driver extends Application {
     public void createStreakLabels(Label[] streaks, int[] streakValues) {
         for(int i = 0; i < streaks.length; i++) {
             streaks[i].setText(" Streak: " + streakValues[i] + " ");
-            streaks[i].setFont(Font.font("Serif Bold", buttonSize));
+            streaks[i].setFont(Font.font("Serif Bold", 50));
         }
     }
 
@@ -219,13 +212,13 @@ public class Driver extends Application {
         // Creates all the start buttons
         for (int i = 0; i < 4; i++) {
             buttons[i].setText(" Start ");
-            buttons[i].setFont(Font.font("Serif Bold", buttonSize));
-            buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: buttonSize;");
+            buttons[i].setFont(Font.font("Serif Bold", 50));
+            buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
         }
         // Creates the "+" button
         buttons[4].setText(" + ");
-        buttons[4].setFont(Font.font("Serif Bold", buttonSize));
-        buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: buttonSize;");
+        buttons[4].setFont(Font.font("Serif Bold", 50));
+        buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
     }
 
     /** Sets the action for the given array of Buttons to start and stop a timer when clicked, and updates
