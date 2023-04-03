@@ -11,7 +11,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -27,17 +26,26 @@ import java.util.stream.IntStream;
  */
 
 public class Driver extends Application {
+    // Declaring input variables
     String[] assignmentTitles = {"", "", "", ""};
     String[] dueDates = {"", "", "", ""};
     Integer[] totalEstimatedTimes = {null, null, null, null};
     Integer[] remainingTimes = {null, null, null, null};
+    int counter = 0;
+
+
+    // Timer variables
+    Double[] timerCounts = {0.0, 0.0, 0.0, 0.0};
+    Double[] startTimes = {0.0, 0.0, 0.0, 0.0};
+    Double[] finishTimes = {0.0, 0.0, 0.0, 0.0};
+    Double[] totalTimes = {0.00, 0.00, 0.00, 0.00};
+    Boolean[] timerStatuses = {false, false, false, false};
 
     // Get size of screen
     double screenWidth = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
     double screenHeight = javafx.stage.Screen.getPrimary().getVisualBounds().getHeight();
 
-    int counter = 0;
-
+    // Declaring the labels
     Label[] labels = IntStream.range(0, 5)
             .mapToObj(i -> new Label(""))
             .toArray(Label[]::new);
@@ -50,42 +58,36 @@ public class Driver extends Application {
             .mapToObj(i -> new Button(""))
             .toArray(Button[]::new);
 
-    int[] streakValues = {0, 0, 0, 0};
-
-    //Timer
-    Double[] timerCounts = {0.0, 0.0, 0.0, 0.0};
-    Double[] startTimes = {0.0, 0.0, 0.0, 0.0};
-    Double[] finishTimes = {0.0, 0.0, 0.0, 0.0};
-    Double[] totalTimes = {0.00, 0.00, 0.00, 0.00};
-    Boolean[] timerStatuses = {false, false, false, false};
-
     Label[] timers = IntStream.range(0, 4)
             .mapToObj(i -> new Label(""))
             .toArray(Label[]::new);
 
+    int[] streakValues = {0, 0, 0, 0};
 
     //Override the start() method
     @Override
     public void start(Stage primaryStage) {
-        //Creating a GridPane
+        //Creating GridPane
         GridPane root = new GridPane();
         root.setGridLinesVisible(true);
 
+        // Create the elements of the UI
         createAssignmentTitleLabels(assignmentTitles, labels);
         createStreakLabels(streaks, streakValues);
         createTimerLabels(timers, timerCounts, totalTimes);
         createButtons(buttons);
 
-
+        // Checks for start button press
         for (int i = 0; i < 4; i++) {
             buttons[i].setOnAction(e -> {
-                setButtonAction(buttons, startTimes, finishTimes, timerCounts, totalTimes, timerStatuses, timers);
+                setStartButtonAction(buttons, startTimes, finishTimes, timerCounts, totalTimes, timerStatuses, timers);
             });
         }
 
         // On "+" button pressed
-        buttons[4].setOnAction(e -> { //https://examples.javacodegeeks.com/java-development/desktop-java/javafx/dialog-javafx/javafx-dialog-example/
-            TextInputDialog dialog = new TextInputDialog();
+        buttons[4].setOnAction(e -> {
+            TextInputDialog dialog = new TextInputDialog(); // Creates pop-up
+            // Set-up pop-up text
             dialog.setTitle("Text Input Dialog");
             dialog.setHeaderText("Look, a Text Input Dialog");
             dialog.setContentText("Please enter your name, age, and gender:");
@@ -96,6 +98,7 @@ public class Driver extends Application {
             grid.setVgap(10);
             grid.setPadding(new Insets(20, 150, 10, 10));
 
+            // Creates text fields
             TextField assignmentTitleTF = new TextField();
             TextField dueDateTF = new TextField();
             TextField totalEstimatedTimeTF = new TextField();
@@ -169,11 +172,13 @@ public class Driver extends Application {
      * @param labels An array of labels to represent the assignment titles and the "Add New Task" label.
      */
     public void createAssignmentTitleLabels(String[] assignmentTitles, Label[] labels) {
+        // Draws each assignment title
         for (int i = 0; i < labels.length - 1; i++) {
             labels[i].setText(" " + assignmentTitles[i]);
             labels[i].setFont(Font.font("Serif Bold", 50));
             labels[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-min-width:600px; -fx-min-height: 200px;");
         }
+        // Draws new task label
         labels[labels.length - 1].setText(" Add New Task");
         labels[labels.length - 1].setFont(Font.font("Serif Bold", 50));
     }
@@ -199,6 +204,7 @@ public class Driver extends Application {
      */
     public void createTimerLabels(Label[] timers, Double[] timerCounts, Double[] totalTimes) {
         for (int i = 0; i < 4; i++) {
+            // Draws timers with rounded values
             timers[i].setText(" Current Time Spent (Mins): " + timerCounts[i] + " \n Time Required (Hours): " + (totalTimes[i] = Math.round(totalTimes[i] * 100.0) / 100.0) + " ");
             timers[i].setFont(Font.font("Serif Bold", 34));
             timers[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:240px; -fx-min-height: 200px;");
@@ -212,11 +218,13 @@ public class Driver extends Application {
      *@param buttons an array of Button objects to be created
      */
     public void createButtons(Button[] buttons) {
+        // Creates all the start buttons
         for (int i = 0; i < 4; i++) {
             buttons[i].setText(" Start ");
             buttons[i].setFont(Font.font("Serif Bold", 50));
             buttons[i].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
         }
+        // Creates the "+" button
         buttons[4].setText(" + ");
         buttons[4].setFont(Font.font("Serif Bold", 50));
         buttons[4].setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 2px; -fx-min-width:200px; -fx-max-height: 50px;");
@@ -233,9 +241,8 @@ public class Driver extends Application {
      * @param timerStatuses the array of timer statuses for each timer (running or not running)
      * @param timers the array of Labels that will display the current timer and total time for each timer
      */
-    public void setButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses,
-                                Label[] timers) {
-        for (int i = 0; i < buttons.length; i++) {
+    public void setStartButtonAction(Button[] buttons, Double[] startTimes, Double[] finishTimes, Double[] timerCounts, Double[] totalTimes, Boolean[] timerStatuses, Label[] timers) {
+        for (int i = 0; i < buttons.length; i++) { // Cycles through for each possible start button press
             int index = i;
             buttons[i].setOnAction(e -> {
                 if (timerStatuses[index] == false) { // if timer was not already running
